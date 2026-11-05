@@ -13,12 +13,13 @@ complicating the MVP.
 
 ## Project status
 
-**Stage:** Requirements and architecture specification\
+**Stage:** Phase 1 — repository and local development environment\
 **Current scope:** Single company, Brazilian Portuguese interface, BRL
 currency, internal payslips, email and WhatsApp reminders.
 
-> This repository documentation defines the target requirements. It does
-> not imply that the application has already been implemented.
+> The frontend and backend are runnable skeletons (health check only).
+> Business modules have not been implemented yet; the documents in `docs/`
+> define the target requirements.
 
 ## Key decisions
 
@@ -31,7 +32,7 @@ currency, internal payslips, email and WhatsApp reminders.
 
   Frontend                            Next.js, React, TypeScript
 
-  Backend                             Java 21+ and Spring Boot
+  Backend                             Java 25 (LTS) and Spring Boot 4.1
 
   Database                            PostgreSQL
 
@@ -100,7 +101,8 @@ financial-management-system/
 ├── backend/                   # Spring Boot application
 ├── infrastructure/
 │   ├── docker/                # Container-related configuration
-│   └── database/              # Optional database support files
+│   └── database/              # Database support files (init scripts)
+├── .github/workflows/ci.yml   # CI: builds, tests, secret scan
 ├── docs/
 │   ├── architecture.md
 │   ├── requirements.md
@@ -110,34 +112,37 @@ financial-management-system/
 │   └── development.md
 ├── docker-compose.yml
 ├── .env.example
+├── .editorconfig
+├── .gitattributes
 ├── .gitignore
 └── README.md
 ```
 
-The folders and files above describe the intended repository layout;
-create them as implementation work proceeds.
+## Quick start
 
-## Quick start (target development workflow)
+Prerequisites:
 
-Prerequisites: - Git - Docker Desktop or Docker Engine with Compose -
-Java 21 or the selected compatible LTS version - Node.js LTS and npm
-
-Once the backend, frontend and Compose configuration have been
-implemented:
+- Git
+- Docker Desktop or Docker Engine with Compose v2
+- JDK 25 (e.g. Eclipse Temurin 25) with `JAVA_HOME` set — Maven is provided by the wrapper
+- Node.js 24 LTS and npm
 
 ``` bash
 git clone <repository-url>
-cd financial-management-system
-cp .env.example .env
+cd Financial-System
+cp .env.example .env                              # Windows: Copy-Item .env.example .env
+cp frontend/.env.example frontend/.env.local      # Windows: Copy-Item frontend\.env.example frontend\.env.local
 ```
 
-Review `.env` and replace all development placeholders. Never use
+Review `.env` and replace the development placeholders (at least
+`POSTGRES_PASSWORD` and the matching `DB_PASSWORD`). Never use
 production credentials in local development.
 
-Start the database:
+Start the database and wait until it reports `(healthy)`:
 
 ``` bash
-docker compose up -d postgres
+docker compose up -d --wait postgres
+docker compose ps
 ```
 
 Run the backend (Windows PowerShell):
@@ -158,16 +163,32 @@ Run the frontend in a second terminal:
 
 ``` bash
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
 
-Expected local URLs (subject to the implemented configuration): -
-Frontend: http://localhost:3000 - Backend: http://localhost:8080 - API
-base path: `/api/v1` - Swagger UI: typically `/swagger-ui/index.html`
+Local URLs:
 
-Database migrations should run through Flyway during backend startup or
-an explicitly documented migration command.
+| Service          | URL                                      |
+| ---------------- | ---------------------------------------- |
+| Frontend         | http://localhost:3000                    |
+| Backend health   | http://localhost:8080/api/v1/health      |
+| Actuator health  | http://localhost:8080/actuator/health    |
+| API base path    | `/api/v1`                                |
+
+Swagger UI (Springdoc) and Flyway migrations are introduced in Phase 2.
+
+### Build and test
+
+| Component | Command (from the component directory)                                   |
+| --------- | ------------------------------------------------------------------------ |
+| Backend   | `./mvnw verify` (Windows: `.\mvnw.cmd verify`)                           |
+| Frontend  | `npm ci && npm run lint && npm run typecheck && npm test && npm run build` |
+
+CI (`.github/workflows/ci.yml`) runs the same commands on every push and
+pull request, plus a PostgreSQL Compose health check and a gitleaks secret
+scan. See [Development Setup](docs/development.md) for details and
+troubleshooting.
 
 ## Core financial rules
 

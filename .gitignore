@@ -1,0 +1,168 @@
+
+# ==========================================
+# FINANCIAL MANAGEMENT SYSTEM
+# Next.js + Spring Boot + PostgreSQL
+# ==========================================
+
+# ------------------------------------------
+# Environment variables and secrets
+# ------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Frontend local environment
+frontend/.env.local
+frontend/.env.*.local
+
+# Certificates and private keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# ------------------------------------------
+# Java / Maven / Spring Boot
+# ------------------------------------------
+**/target/
+**/out/
+**/*.class
+**/*.jar
+**/*.war
+**/*.ear
+
+# Maven wrapper: KEEP these files tracked
+# !mvnw
+# !mvnw.cmd
+# !.mvn/wrapper/maven-wrapper.jar
+
+# JVM crash logs
+hs_err_pid*
+replay_pid*
+
+# Spring logs
+logs/
+*.log
+
+# ------------------------------------------
+# Next.js
+# ------------------------------------------
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+
+# Next.js generated files
+frontend/next-env.d.ts
+
+# ------------------------------------------
+# Node.js / npm
+# ------------------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Package manager caches
+.npm/
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+
+# ------------------------------------------
+# Testing / Coverage
+# ------------------------------------------
+**/coverage/
+**/.nyc_output/
+**/test-results/
+**/playwright-report/
+**/vitest-report/
+**/surefire-reports/
+**/failsafe-reports/
+
+# ------------------------------------------
+# Docker / Local database
+# ------------------------------------------
+# Never commit local database data
+postgres-data/
+pgdata/
+**/postgres-data/
+**/pgdata/
+
+# Docker overrides (keep examples)
+docker-compose.override.yml
+compose.override.yml
+
+# ------------------------------------------
+# IDEs / Editors
+# ------------------------------------------
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Visual Studio Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# NetBeans
+nbproject/private/
+
+# ------------------------------------------
+# Operating system
+# ------------------------------------------
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ------------------------------------------
+# Temporary files
+# ------------------------------------------
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+
+# ------------------------------------------
+# Build and distribution artifacts
+# ------------------------------------------
+dist/
+build/
+.cache/
+.tmp/
+.temp/
+
+# ------------------------------------------
+# Miscellaneous
+# ------------------------------------------
+*.stackdump

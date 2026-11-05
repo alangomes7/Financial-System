@@ -58,7 +58,7 @@ PostgreSQL database
 
 ### Backend
 
--   Java 21 or a supported LTS version selected at project setup.
+-   Java 25 (LTS) for the backend runtime and build.
 -   Spring Boot.
 -   Spring Security.
 -   Spring Data JPA and Hibernate.

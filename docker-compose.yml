@@ -1,0 +1,38 @@
+# Local development services for the Financial Management System.
+#
+# Usage:
+#   docker compose up -d postgres
+#   docker compose ps          # wait until STATUS shows "(healthy)"
+#
+# Configuration is read from the root `.env` file (see `.env.example`).
+
+name: financial-system
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: financial-system-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-finance_db}
+      POSTGRES_USER: ${POSTGRES_USER:-finance_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env (copy .env.example)}
+      TZ: America/Sao_Paulo
+      PGTZ: America/Sao_Paulo
+    ports:
+      # Bind to localhost only so the database is not exposed on the network.
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./infrastructure/database/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  postgres-data:
+    name: financial-system-postgres-data
+
