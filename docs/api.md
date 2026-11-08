@@ -136,6 +136,37 @@ GET /api/v1/reports/negotiations
 Use query parameters for filters, sorting and pagination. Define export
 endpoints or an explicit `format` parameter for PDF, XLSX and CSV.
 
+### Pagination, sorting, and filtering
+
+Collection endpoints use zero-based `page` and `size` query parameters.
+The default size is 20 and the maximum is 100. Sort by repeating the
+`sort` parameter as `sort=property,direction`, where direction is `asc`
+or `desc`; each endpoint must document its supported properties and
+defaults. For example:
+
+```http
+GET /api/v1/accounts?page=0&size=20&sort=createdAt,desc&accountNumber=123
+```
+
+List responses use the same envelope:
+
+```json
+{
+  "content": [],
+  "page": 0,
+  "size": 20,
+  "totalElements": 0,
+  "totalPages": 0
+}
+```
+
+Filters are optional named query parameters, applied server-side. Ignore
+blank filters and document each filter's matching behavior. Account
+search matches `accountNumber` case-insensitively by substring.
+The accounts collection supports sorting by `accountNumber`, `balance`,
+or `createdAt` (default: `createdAt,desc`); unsupported sort properties
+return `400 Bad Request`.
+
 ## 3. Response conventions
 
 Use a consistent error structure, for example:
@@ -183,7 +214,8 @@ For list endpoints, use a consistent pagination envelope:
 
 ## 5. Documentation and testing
 
-Generate OpenAPI documentation using Springdoc. Add integration tests
+OpenAPI is generated with Springdoc. The specification is available at
+`/v3/api-docs` and Swagger UI at `/swagger-ui.html`. Add integration tests
 for authorization, validation, state transitions, partial payments,
 duplicate submissions, refunds and cancellation workflows.
 

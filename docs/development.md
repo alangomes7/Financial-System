@@ -141,7 +141,7 @@ status by calling `GET /api/v1/health`.
 | Frontend | http://localhost:3000 |
 | Backend | http://localhost:8080 |
 | API base path | `/api/v1` |
-| Swagger UI | Phase 2 (Springdoc) |
+| Swagger UI | http://localhost:8080/swagger-ui.html |
 
 ## 7. Build and test
 
@@ -154,6 +154,24 @@ Backend (from `backend/`):
 Runs unit tests and Testcontainers integration tests, then packages
 `target/backend-0.0.1-SNAPSHOT.jar`. Integration tests start their own
 PostgreSQL container and are **skipped** when Docker is not running.
+
+### Backend test conventions
+
+Backend console logs are emitted as ECS-formatted JSON, with the root log
+level set to `INFO`.
+
+- Name tests after the behavior under test; keep unit tests focused on one
+  class and use mocks only for its collaborators.
+- Use Spring test slices (for example, MVC or JPA slices) when framework
+  wiring is part of the behavior but a full application context is not needed.
+- Use `@SpringBootTest` with Testcontainers for integration behavior that
+  requires the full application or PostgreSQL. Do not rely on local database
+  state.
+- Keep tests deterministic and isolated; do not call real external services or
+  use production data.
+- Run `.\mvnw.cmd test` for the backend test suite, or
+  `.\mvnw.cmd -Dtest=BackendApplicationTests test` for the application
+  integration tests.
 
 Frontend (from `frontend/`):
 

@@ -9,13 +9,12 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration(proxyBeanMethods = false)
 class TestcontainersConfiguration {
 
-	/** Keep this image in sync with docker-compose.yml. */
-	static final String POSTGRES_IMAGE = "postgres:17-alpine";
+  /** Keep this image in sync with docker-compose.yml. */
+  static final String POSTGRES_IMAGE = "postgres:17-alpine";
 
-	@Bean
-	@ServiceConnection
-	PostgreSQLContainer postgresContainer() {
-		return new PostgreSQLContainer(DockerImageName.parse(POSTGRES_IMAGE));
-	}
-
+  @Bean
+  @ServiceConnection
+  PostgreSQLContainer postgresContainer() {
+    return new PostgreSQLContainer(DockerImageName.parse(POSTGRES_IMAGE));
+  }
 }

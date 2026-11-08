@@ -1,0 +1,7 @@
+spring:
+  main:
+    web-application-type: none
+  datasource:
+    url: jdbc:postgresql://localhost:5432/financial_db
+    username: missing_config_test
+    password: ${MISSING_REQUIRED_DB_PASSWORD}

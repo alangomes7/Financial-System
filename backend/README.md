@@ -43,9 +43,12 @@ available; CI always runs them.
 | Endpoint                        | Description                                       |
 | ------------------------------- | ------------------------------------------------- |
 | `GET /api/v1/health`            | `200` + `{"status":"UP","database":"UP",...}` or `503` when the database is unreachable |
+| `GET /api/v1/accounts`          | Paginated account list; supports `page`, `size`, `sort`, and `accountNumber` |
 | `GET /actuator/health`          | Spring Boot Actuator aggregate health (includes DB) |
 | `GET /actuator/health/liveness` | Liveness probe                                    |
 | `GET /actuator/health/readiness`| Readiness probe                                   |
+| `GET /v3/api-docs`              | OpenAPI specification                             |
+| `GET /swagger-ui.html`          | Swagger UI                                        |
 
 ## Package layout
 

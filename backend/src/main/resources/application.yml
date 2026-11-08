@@ -1,49 +1,107 @@
+
+# ==========================================================
+# Application Configuration
+# ==========================================================
+
 spring:
   application:
     name: financial-backend
+
+  # Environment Configuration
   config:
-    # Load the root `.env` file (KEY=value format) for local development.
-    # Real environment variables always take precedence over these values.
+    # Load root and backend .env files for local development.
+    # Environment variables take precedence over imported values.
     import:
       - optional:file:../.env[.properties]
       - optional:file:.env[.properties]
+
+  # Database Configuration
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/finance_db}
-    username: ${DB_USERNAME:finance_user}
-    # No default on purpose: the password must come from the environment.
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/financial_db}
+    username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+    # HikariCP Connection Pool
     hikari:
       pool-name: financial-hikari
       maximum-pool-size: 10
       connection-timeout: 10000
+
+  # JSON Configuration
   jackson:
     time-zone: America/Sao_Paulo
 
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  # JPA & Hibernate Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    web:
+      pageable:
+        default-page-size: 20
+        max-page-size: 100
+        one-indexed-parameters: false
+
+
+# ==========================================================
+# Server Configuration
+# ==========================================================
+
 server:
   port: ${SERVER_PORT:8080}
+
   error:
     include-stacktrace: never
     include-message: never
 
+
+# ==========================================================
+# Application Settings
+# ==========================================================
+
 app:
   cors:
     allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:3000}
+
+
+# ==========================================================
+# Actuator & Monitoring
+# ==========================================================
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+
   endpoint:
     health:
       show-details: never
       probes:
         enabled: true
+
   info:
     env:
       enabled: false
 
+
+# ==========================================================
+# Logging Configuration
+# ==========================================================
+
 logging:
+  structured:
+    format:
+      console: ecs
   level:
     root: INFO
-
