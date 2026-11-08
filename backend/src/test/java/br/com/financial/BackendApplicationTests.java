@@ -23,7 +23,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  * provides Docker, so it always runs there.
  */
 @Import(TestcontainersConfiguration.class)
-@SpringBootTest
+@SpringBootTest(properties = "DB_PASSWORD=test")
 @AutoConfigureMockMvc
 @Testcontainers(disabledWithoutDocker = true)
 class BackendApplicationTests {
